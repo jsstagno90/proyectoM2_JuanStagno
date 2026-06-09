@@ -52,10 +52,28 @@ async function deleteAuthor(id) {
     return result.rows[0];
 }
 
+async function patchAuthor(id, name, email, bio) {
+    const result = await pool.query(
+        `
+        UPDATE authors
+        SET
+            name = COALESCE($1, name),
+            email = COALESCE($2, email),
+            bio = COALESCE($3, bio)
+        WHERE id = $4
+        RETURNING *
+        `,
+        [name, email, bio, id]
+    );
+
+    return result.rows[0];
+}
+
 module.exports = {
     getAllAuthors,
     getAuthorById,  
     createAuthor,
     updateAuthor,
-    deleteAuthor
+    deleteAuthor,
+    patchAuthor
 };

@@ -2,14 +2,10 @@ const { getAllAuthors,
         getAuthorById,
         createAuthor,
         updateAuthor,
-        deleteAuthor
+        deleteAuthor,
+        patchAuthor
 
 } = require("../services/authors.service");
-
-console.log("SERVICE:", {
-    getAllAuthors,
-    getAuthorById,
-});
 
 async function getAuthors(req, res) {
     try {
@@ -137,10 +133,45 @@ async function deleteAuthorById(req, res) {
     }
 }
 
+async function patchAuthorById(req, res) {
+    try {
+        const { name, email, bio } = req.body;
+
+        const updatedAuthor = await patchAuthor(
+            req.params.id,
+            name,
+            email,
+            bio
+        );
+
+        if (!updatedAuthor) {
+            return res.status(404).json({
+                message: "Autor no encontrado"
+            });
+        }
+
+        res.json(updatedAuthor);
+
+    } catch (error) {
+
+        if (error.code === "23505") {
+            return res.status(400).json({
+                message: "El email ya existe"
+            });
+        }
+
+        res.status(500).json({
+            message: "Error al actualizar autor",
+            error: error.message
+        });
+    }
+}
+
 module.exports = {
     getAuthors,
     getAuthor,
     createNewAuthor,
     updateAuthorById,
-    deleteAuthorById
+    deleteAuthorById,
+    patchAuthorById
 };
