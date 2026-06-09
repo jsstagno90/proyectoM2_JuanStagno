@@ -12,4 +12,20 @@ describe("Posts Endpoints", () => {
 
     });
 
+    test("POST /posts crea un nuevo post", async () => {
+
+    const response = await request(app)
+        .post("/posts")
+        .send({
+            author_id: 6,
+            title: "Post de prueba",
+            content: "Contenido creado desde Jest",
+            published: true
+        });
+
+    expect(response.statusCode).toBe(201);
+    expect(response.body.title).toBe("Post de prueba");
+
+});
+
 });

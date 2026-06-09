@@ -12,4 +12,19 @@ describe("Authors Endpoints", () => {
 
     });
 
+    test("POST /authors crea un nuevo autor", async () => {
+
+        const response = await request(app)
+            .post("/authors")
+            .send({
+                name: "Autor Test",
+                email: `autor${Date.now()}@test.com`,
+                bio: "Creado desde Jest"
+            });
+
+        expect(response.statusCode).toBe(201);
+        expect(response.body.name).toBe("Autor Test");
+
+    });
+
 });
