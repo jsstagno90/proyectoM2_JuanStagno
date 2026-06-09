@@ -26,8 +26,20 @@ async function createPost(author_id, title, content, published) {
 
     return result.rows[0];
 }
+
+async function deletePost(id) {
+    const result = await pool.query(
+        "DELETE FROM posts WHERE id = $1 RETURNING *",
+        [id]
+    );
+
+    return result.rows[0];
+}
+
+
 module.exports = {
     getAllPosts,
     getPostById,
     createPost,
+    deletePost
 };

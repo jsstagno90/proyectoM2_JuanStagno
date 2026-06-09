@@ -1,7 +1,8 @@
 const {
     getAllPosts,
     getPostById,
-    createPost
+    createPost,
+    deletePost
 } = require("../services/posts.service");
 
 async function getPosts(req, res) {
@@ -62,8 +63,33 @@ async function createNewPost(req, res) {
     }
 }
 
+
+
+async function deletePostById(req, res) {
+    try {
+        const deletedPost = await deletePost(req.params.id);
+
+        if (!deletedPost) {
+            return res.status(404).json({
+                message: "Post no encontrado"
+            });
+        }
+
+        res.status(204).send();
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al eliminar post",
+            error: error.message
+        });
+    }
+}
+
+
+
 module.exports = {
     getPosts,
     getPost,
     createNewPost,
+    deletePostById
 };
