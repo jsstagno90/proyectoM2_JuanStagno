@@ -2,7 +2,8 @@ const {
     getAllPosts,
     getPostById,
     createPost,
-    deletePost
+    deletePost,
+    updatePost
 } = require("../services/posts.service");
 
 async function getPosts(req, res) {
@@ -85,11 +86,44 @@ async function deletePostById(req, res) {
     }
 }
 
+async function updatePostById(req, res) {
+    try {
+        const { author_id, title, content, published } = req.body;
 
+        if (!author_id || !title || !content) {
+            return res.status(400).json({
+                message: "author_id, title y content son obligatorios"
+            });
+        }
+
+        const updatedPost = await updatePost(
+            req.params.id,
+            author_id,
+            title,
+            content,
+            published ?? false
+        );
+
+        if (!updatedPost) {
+            return res.status(404).json({
+                message: "Post no encontrado"
+            });
+        }
+
+        res.json(updatedPost);
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al actualizar post",
+            error: error.message
+        });
+    }
+}
 
 module.exports = {
     getPosts,
     getPost,
     createNewPost,
-    deletePostById
+    deletePostById,
+    updatePostById
 };

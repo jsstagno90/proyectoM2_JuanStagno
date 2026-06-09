@@ -36,10 +36,27 @@ async function deletePost(id) {
     return result.rows[0];
 }
 
+async function updatePost(id, author_id, title, content, published) {
+    const result = await pool.query(
+        `
+        UPDATE posts
+        SET author_id = $1,
+            title = $2,
+            content = $3,
+            published = $4
+        WHERE id = $5
+        RETURNING *
+        `,
+        [author_id, title, content, published, id]
+    );
+
+    return result.rows[0];
+}
 
 module.exports = {
     getAllPosts,
     getPostById,
     createPost,
-    deletePost
+    deletePost,
+    updatePost
 };
