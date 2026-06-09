@@ -3,7 +3,8 @@ const {
     getPostById,
     createPost,
     deletePost,
-    updatePost
+    updatePost,
+    getPostsByAuthor
 } = require("../services/posts.service");
 
 async function getPosts(req, res) {
@@ -120,10 +121,31 @@ async function updatePostById(req, res) {
     }
 }
 
+async function getPostsAuthor(req, res) {
+    try {
+        const posts = await getPostsByAuthor(req.params.authorId);
+
+        if (posts.length === 0) {
+            return res.status(404).json({
+                message: "No se encontraron posts para este author"
+            });
+        }
+
+        res.json(posts);
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al obtener posts del author",
+            error: error.message
+        });
+    }
+}
+
 module.exports = {
     getPosts,
     getPost,
     createNewPost,
     deletePostById,
-    updatePostById
+    updatePostById,
+    getPostsAuthor
 };

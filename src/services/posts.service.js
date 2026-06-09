@@ -53,10 +53,35 @@ async function updatePost(id, author_id, title, content, published) {
     return result.rows[0];
 }
 
+async function getPostsByAuthor(authorId) {
+    const result = await pool.query(
+        `
+        SELECT
+            p.id,
+            p.title,
+            p.content,
+            p.published,
+            p.created_at,
+            a.id AS author_id,
+            a.name,
+            a.email,
+            a.bio
+        FROM posts p
+        JOIN authors a
+            ON p.author_id = a.id
+        WHERE a.id = $1
+        `,
+        [authorId]
+    );
+
+    return result.rows;
+}
+
 module.exports = {
     getAllPosts,
     getPostById,
     createPost,
     deletePost,
-    updatePost
+    updatePost,
+    getPostsByAuthor
 };
