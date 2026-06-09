@@ -1,6 +1,7 @@
 const {
     getAllPosts,
-    getPostById
+    getPostById,
+    createPost
 } = require("../services/posts.service");
 
 async function getPosts(req, res) {
@@ -30,6 +31,33 @@ async function getPost(req, res) {
         res.status(500).json({
             message: "Error al obtener post",
             error: error.message,
+        });
+    }
+}
+
+async function createNewPost(req, res) {
+    try {
+        const { author_id, title, content, published } = req.body;
+
+        if (!author_id || !title || !content) {
+            return res.status(400).json({
+                message: "author_id, title y content son obligatorios"
+            });
+        }
+
+        const newPost = await createPost(
+            author_id,
+            title,
+            content,
+            published ?? false
+        );
+
+        res.status(201).json(newPost);
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al crear post",
+            error: error.message
         });
     }
 }
