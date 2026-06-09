@@ -3,9 +3,13 @@ openapi: 3.0.0
 info:
   title: MiniBlog API
   version: 1.0.0
-  description: API REST para gestionar autores y posts.
+  description: API REST para gestionar autores y publicaciones.
+
+servers:
+  - url: http://localhost:3000
 
 paths:
+
   /authors:
     get:
       summary: Obtener todos los autores
@@ -14,19 +18,43 @@ paths:
           description: Lista de autores
 
     post:
-      summary: Crear un autor
+      summary: Crear un nuevo autor
       responses:
         '201':
-          description: Autor creado
+          description: Autor creado correctamente
 
   /authors/{id}:
     get:
-      summary: Obtener autor por ID
+      summary: Obtener un autor por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Autor encontrado
         '404':
           description: Autor no encontrado
+
+    put:
+      summary: Actualizar un autor
+      responses:
+        '200':
+          description: Autor actualizado
+
+    patch:
+      summary: Actualización parcial de un autor
+      responses:
+        '200':
+          description: Autor actualizado parcialmente
+
+    delete:
+      summary: Eliminar un autor
+      responses:
+        '204':
+          description: Autor eliminado
 
   /posts:
     get:
@@ -36,23 +64,47 @@ paths:
           description: Lista de posts
 
     post:
-      summary: Crear un post
+      summary: Crear un nuevo post
       responses:
         '201':
-          description: Post creado
+          description: Post creado correctamente
 
   /posts/{id}:
     get:
-      summary: Obtener post por ID
+      summary: Obtener un post por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Post encontrado
         '404':
           description: Post no encontrado
 
+    put:
+      summary: Actualizar un post
+      responses:
+        '200':
+          description: Post actualizado
+
+    delete:
+      summary: Eliminar un post
+      responses:
+        '204':
+          description: Post eliminado
+
   /posts/author/{authorId}:
     get:
       summary: Obtener posts de un autor
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: Lista de posts del autor
