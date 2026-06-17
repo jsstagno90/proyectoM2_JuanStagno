@@ -1,5 +1,10 @@
 # MiniBlog API
 
+##Enlaces
+🌐 Aplicación desplegada: https://proyectom2juanstagno-production.up.railway.app/
+📖 Documentación Swagger: https://proyectom2juanstagno-production.up.railway.app/api-docs
+💻 Repositorio: https://github.com/jsstagno90/proyectoM2_JuanStagno
+
 ## Descripción
 
 MiniBlog API es una API REST desarrollada con Node.js, Express y PostgreSQL para gestionar autores y publicaciones.
